@@ -480,35 +480,7 @@ class GetTeamPlayers(generics.GenericAPIView):
         return Response(response)
 
 
-class EditPlayerProfile(generics.GenericAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAdminUser]
 
-    def post(self, request):
-        if (request.data.get('team_id') != None and request.data.get('team_id') != '' and request.data.get('team_name')!=None and request.data.get('team_name') != ''):
-        
-            try:
-                team_id = request.data.get('team_id')
-                team_name = request.data.get('team_name')
-                Team_data = Teams.objects.get(id = team_id)
-                Team_data.team_name = team_name
-                Team_data.save()
-                
-                response['status'] = "true"
-                response['message'] = "data updated"
-                response['country_id'] = Team_data.id
-                
-            except:
-                response['status'] = "false"
-                response['message'] = "no data found"
-
-        else:
-            response['status'] = "false"
-            response['message'] = "no required param"
-
-
-    
-        return Response(response)
 
 
 

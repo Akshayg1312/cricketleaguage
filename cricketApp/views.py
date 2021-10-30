@@ -366,25 +366,31 @@ class AddPlayerProfile(generics.GenericAPIView):
     permission_classes = [IsAdminUser]
     def post(self ,request):
         if (request.data.get('team_id') != None and request.data.get('team_id') != '' and request.data.get('player_name') != None  and request.data.get('player_name') != ''  and request.data.get('born_date') != None  and request.data.get('born_date') != ''  and request.data.get('age') != None and request.data.get('age') != '' and request.data.get('player_role') != None and  request.data.get('player_role') != '' and request.data.get('batting_style') != None and request.data.get('batting_style') != '' and request.data.get('bowling_style') != None and request.data.get('bowling_style') != '' ):
+            try:
 
-            team_id = request.data.get('team_id')
-            team    = Teams.objects.get(id = team_id)
-            player_name = request.data.get('player_name')
-            player_image = request.data.get('player_image')
-            born_date = request.data.get('born_date')
-            age = request.data.get('age')
-            birth_place = request.data.get('birth_place')
-            career_score = request.data.get('career_score')
-            player_role = request.data.get('player_role')
-            batting_style = request.data.get('batting_style')
-            bowling_style = request.data.get('bowling_style')
-            icc_ranking = request.data.get('icc_ranking')
-            
-            data  = PlayerProfile.objects.create(team_id_fk = team , player_name = player_name ,player_image = player_image ,born_date = born_date ,age = age , birth_place = birth_place, career_score= career_score , player_role = player_role , batting_style = batting_style ,bowling_style = bowling_style , icc_ranking = icc_ranking)
 
-            response['status'] = "true"
-            response['message'] = "data added "
-            response['player_id'] = data.id
+                team_id = request.data.get('team_id')
+                team    = Teams.objects.get(id = team_id)
+                player_name = request.data.get('player_name')
+                player_image = request.data.get('player_image')
+                born_date = request.data.get('born_date')
+                age = request.data.get('age')
+                birth_place = request.data.get('birth_place')
+                career_score = request.data.get('career_score')
+                player_role = request.data.get('player_role')
+                batting_style = request.data.get('batting_style')
+                bowling_style = request.data.get('bowling_style')
+                icc_ranking = request.data.get('icc_ranking')
+                
+                data  = PlayerProfile.objects.create(team_id_fk = team , player_name = player_name ,player_image = player_image ,born_date = born_date ,age = age , birth_place = birth_place, career_score= career_score , player_role = player_role , batting_style = batting_style ,bowling_style = bowling_style , icc_ranking = icc_ranking)
+
+                response['status'] = "true"
+                response['message'] = "data added "
+                response['player_id'] = data.id
+            except:
+                response['status'] = "false"
+                response['message'] = "no data found"
+
 
         else:
             response['status'] = "false"
@@ -489,45 +495,51 @@ class EditPlayerProfile(generics.GenericAPIView):
     permission_classes = [IsAdminUser]
     def post(self ,request):
         if (request.data.get('player_id') != None and request.data.get('player_id') != '' ):
+            try:
             
-            player_id = request.data.get('player_id')
-            player    = PlayerProfile.objects.get(id = player_id)
-            print(player.player_image)
-            team_id = request.data.get('team_id',player.team_id_fk.id)
-            team    = Teams.objects.get(id = team_id)
-            player_name = request.data.get('player_name',player.player_name)
-            player_image = request.data.get('player_image',player.player_image)
-            born_date = request.data.get('born_date',player.born_date)
-            age = request.data.get('age',player.age)
-            birth_place = request.data.get('birth_place',player.birth_place)
-            career_score = request.data.get('career_score',player.career_score)
-            player_role = request.data.get('player_role',player.player_role)
-            print(player_role)
-            batting_style = request.data.get('batting_style',player.batting_style)
-            bowling_style = request.data.get('bowling_style',player.bowling_style)
-            icc_ranking = request.data.get('icc_ranking',player.icc_ranking)
-            
-            
+                player_id = request.data.get('player_id')
+                player    = PlayerProfile.objects.get(id = player_id)
+                print(player.player_image)
+                team_id = request.data.get('team_id',player.team_id_fk.id)
+                team    = Teams.objects.get(id = team_id)
+                player_name = request.data.get('player_name',player.player_name)
+                player_image = request.data.get('player_image',player.player_image)
+                born_date = request.data.get('born_date',player.born_date)
+                age = request.data.get('age',player.age)
+                birth_place = request.data.get('birth_place',player.birth_place)
+                career_score = request.data.get('career_score',player.career_score)
+                player_role = request.data.get('player_role',player.player_role)
+                print(player_role)
+                batting_style = request.data.get('batting_style',player.batting_style)
+                bowling_style = request.data.get('bowling_style',player.bowling_style)
+                icc_ranking = request.data.get('icc_ranking',player.icc_ranking)
+                
+                
 
-            player.team_id_fk = team
-            player.player_name = player_name
-            player.player_image = player_image
-            player.born_date = born_date
-            player.age = age
-            player.birth_place = birth_place
-            player.career_score = career_score
-            player.player_role = player_role
-            player.batting_style = batting_style
+                player.team_id_fk = team
+                player.player_name = player_name
+                player.player_image = player_image
+                player.born_date = born_date
+                player.age = age
+                player.birth_place = birth_place
+                player.career_score = career_score
+                player.player_role = player_role
+                player.batting_style = batting_style
 
-            player.bowling_style = bowling_style
-            player.icc_ranking = icc_ranking
+                player.bowling_style = bowling_style
+                player.icc_ranking = icc_ranking
 
-            player.save()
+                player.save()
 
 
-            response['status'] = "true"
-            response['message'] = "data Updated "
-            response['player_id'] = player.id
+                response['status'] = "true"
+                response['message'] = "data Updated "
+                response['player_id'] = player.id
+            except:
+                response['status'] = "false"
+                response['message'] = "no data found"
+
+
 
         else:
             response['status'] = "false"
